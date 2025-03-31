@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Vacas{% endblock %}
+
+{% block content %}
+<h2>🐄 Gestión de Vacas</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Vaca 1</td>
+        <td>3 años</td>
+        <td>Sana</td>
+        <td>
+            <button>Editar</button>
+            <button>Eliminar</button>
+        </td>
+    </tr>
+</table>
+
+<button onclick="window.location.href='/'">Volver al Inicio</button>
+{% endblock %}
