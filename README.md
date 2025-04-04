@@ -31,3 +31,17 @@ para abrir y cerrar las tranqueras y para el sensor rfid
 - el gate code no esta terminado, le falta conectar la parte del sensor que detecta que 
 el animal ya paso y que se cierre la tranquera pero necesitamos perobarlo en directo con 
 los sensores 
+
+4 de abril 20hs FACU
+- Agrego archivo requirements.txt que tiene todas las librerias necesarias peara correr 
+la aplicacion. 
+- Para instalar las librerias solo hay que correr un comando desde el directorio SmartTag
+    **pip install -r requirements.txt**
+- Si se agrega o se elimina alguna libreria hay que actualizar el archivo requirements.txt, 
+con una linea de codigo. **pip freeze > requirements.txt** 
+- Se hace commit y push del archivo y despues los otros tienen que hacer git pull y correr 
+el codigo para descargar las nuevas librerias. **pip install -r requirements.txt**
+- Cree el archivo .gitignore que es para que git cuando hacemos commit y push los ignore y 
+nunca pushee esas cosas. Ahi esta la carpeta .idea que es una carpeta del idea de cada uno 
+y tambien esta la carpeta del entorno virtual que eso cada uno se lo crea en su computadora.
+Y despues los otros me dijo chat que los agregue, son una compilaciones de python ni idea.
