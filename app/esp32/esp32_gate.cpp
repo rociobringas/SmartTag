@@ -24,3 +24,4 @@ void loop() {
         while (true); // Se detiene aquí hasta el siguiente paso
     }
 }
+// falta ponerle que se cierre cuando detecta que el animal paso, pero estaria bueno hacerlo con los sensores
