@@ -45,3 +45,9 @@ el codigo para descargar las nuevas librerias. **pip install -r requirements.txt
 nunca pushee esas cosas. Ahi esta la carpeta .idea que es una carpeta del idea de cada uno 
 y tambien esta la carpeta del entorno virtual que eso cada uno se lo crea en su computadora.
 Y despues los otros me dijo chat que los agregue, son una compilaciones de python ni idea.
+
+5 de abril 10hs
+- Modifique los archivos de login para que quede mas prolijo, con alertas y todo.
+- Cree los archivos user.py y modelUser.py para el modelado de los usuarios.
+- Agregue librerias al requirements
+ 
