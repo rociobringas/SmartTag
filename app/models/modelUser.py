@@ -1,34 +1,33 @@
 from models.user import User
+from database import db
 
-
-class ModelUser():
+class ModelUser:
 
     @classmethod
-    def login(self, db, user):
+    def login(cls, username, password):
         try:
-            cursor = db.connection.cursor()
-            sql = """SELECT id, username, password, fullname FROM user 
-                    WHERE username = '{}'""".format(user.username)
-            cursor.execute(sql)
-            row = cursor.fetchone()
-            if row != None:
-                user = User(row[0], row[1], User.check_password(row[2], user.password), row[3])
+            user = User.query.filter_by(username=username).first()
+            if user and user.check_password(password):
                 return user
-            else:
-                return None
+            return None
         except Exception as ex:
-            raise Exception(ex)
+            raise Exception(f"Error en login: {str(ex)}")
 
     @classmethod
-    def get_by_id(self, db, id):
+    def get_by_id(cls, user_id):
         try:
-            cursor = db.connection.cursor()
-            sql = "SELECT id, username, fullname FROM user WHERE id = {}".format(id)
-            cursor.execute(sql)
-            row = cursor.fetchone()
-            if row != None:
-                return User(row[0], row[1], None, row[2])
-            else:
-                return None
+            return User.query.get(user_id)
         except Exception as ex:
-            raise Exception(ex)
+            raise Exception(f"Error al obtener usuario por ID: {str(ex)}")
+
+    @classmethod
+    def register(cls, username, password, fullname=""):
+        try:
+            if User.query.filter_by(username=username).first():
+                raise Exception("El usuario ya existe")
+            new_user = User(username, password, fullname)
+            db.session.add(new_user)
+            db.session.commit()
+            return new_user
+        except Exception as ex:
+            raise Exception(f"Error al registrar usuario: {str(ex)}")

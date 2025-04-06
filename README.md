@@ -50,4 +50,10 @@ Y despues los otros me dijo chat que los agregue, son una compilaciones de pytho
 - Modifique los archivos de login para que quede mas prolijo, con alertas y todo.
 - Cree los archivos user.py y modelUser.py para el modelado de los usuarios.
 - Agregue librerias al requirements
+- Agregue la base de datos MySQL, cree las tablas desde el Modelo entidad-relación que hicimos: 
+https://lucid.app/lucidchart/e490acf9-9a5d-41bd-b178-88d8825ab94c/edit?viewport_loc=-4%2C407%2C2600%2C1380%2C0_0&invitationId=inv_b1ae20bd-5135-471b-a9b9-ce3b12cfc396 
+- Cree una pagina register para crear usuario y contraseña, con un boton que te lleva al login si 
+ya tenes cuenta.
+- Por ahora el register y login ya funcionan
+
  
