@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Peso{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Registrar Peso</h2>
+
+  <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mb-3">
+      <label for="peso" class="form-label">Peso (kg):</label>
+      <input type="number" step="0.01" class="form-control" id="peso" name="peso" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="fecha" class="form-label">Fecha de medición:</label>
+      <input type="date" class="form-control" id="fecha" name="fecha" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Peso</button>
+  </form>
+</div>
+{% endblock %}

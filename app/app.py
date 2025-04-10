@@ -1,22 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf.csrf import CSRFProtect
-from werkzeug.security import generate_password_hash, check_password_hash
-#import paho.mqtt.client as mqtt
-from models.modelUser import ModelUser
+from datetime import datetime
+
+from config import Config
+from database import db
 from models.user import User
-from database import db  # usamos el db de database.py
+from models.modelUser import ModelUser
+from models.animal import Animal
+from models.weightHistory import WeightHistory
 
-# Configuración inicial
+
 app = Flask(__name__)
-app.secret_key = 'clave_secreta'  # Cambiala por una más segura en producción
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Facu2004@localhost/smarttag'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Configurar MQTT
-#MQTT_BROKER = "tu-servidor-mqtt"
-#MQTT_TOPIC_TRANQUERA = "campo/tranquera"
+app.config.from_object(Config)
 
 # Inicializaciones
 csrf = CSRFProtect(app)
@@ -26,15 +22,11 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
-#client = mqtt.Client()
-#client.connect(MQTT_BROKER, 1883, 60)
-
-# Cargar usuario en sesión
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Rutas
+# Rutas principales
 @app.route("/")
 def home():
     return redirect(url_for("register"))
@@ -44,53 +36,100 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and user.check_password(password):
+
+        user = ModelUser.login(username, password)
+        if user:
             login_user(user)
-            return redirect(url_for('gestion_vacas'))
+            return redirect(url_for('registrar_vaca'))
         else:
             flash('Usuario o contraseña incorrectos.')
-            return render_template('login.html')
+            
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].strip()
         password = request.form['password']
-        fullname = request.form.get('fullname', '')
-
+        
+        if not username or not password:
+            flash("Usuario y contraseña son obligatorios.")
+            return redirect(url_for('register'))
         try:
-            user = ModelUser.register(username, password, fullname)
+            user = ModelUser.register(username, password)
             flash("Registro exitoso. Iniciá sesión.")
-            return redirect(url_for('gestion_vacas'))
+            return redirect(url_for('login'))
         except Exception as e:
             flash(str(e))
-            return render_template('register.html')
 
     return render_template('register.html')
 
-@app.route("/gestion_vacas")
-@login_required
-def gestion_vacas():
-    return render_template("gestion_vacas.html")
-
-
-#@app.route("/abrir_tranquera", methods=["GET", "POST"])
-#def abrir_tranquera():
-    #if request.method == "POST":
-        #data = request.json
-        #tranquera_id = data.get("tranquera")
-        #client.publish(MQTT_TOPIC_TRANQUERA, tranquera_id)
-        #return jsonify({"mensaje": f"Tranquera {tranquera_id} abierta correctamente"})
-    #return render_template("abrir_tranquera.html")
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('Sesión cerrada.')
+    flash('Sesión cerrada correctamente.')
     return redirect(url_for('login'))
+
+@app.route('/registrar_vaca', methods=['GET', 'POST'])
+@login_required
+def registrar_vaca():
+    
+    if request.method == 'POST':
+        breed = request.form['breed']
+        gender = request.form['gender']
+        father = request.form['father']
+        birth_date = datetime.strptime(request.form['birth_date'], '%Y-%m-%d').date()
+        fertile = 'fertile' in request.form
+
+        # Crea el animal
+        new_animal = Animal(
+            IDUser=current_user.id,
+            breed=breed,
+            gender=gender,
+            father=father,
+            birth=birth_date,
+            fertile=fertile
+        )
+
+        db.session.add(new_animal)
+        db.session.commit()
+
+        flash('¡Vaca registrada con éxito!')
+        return redirect(url_for('registrar_peso', id_animal= new_animal.IDAnimal))
+    return render_template('registrar_vaca.html')
+
+
+@app.route('/registrar_peso/<int:id_animal>', methods=['GET', 'POST'])
+@login_required
+def registrar_peso(id_animal):
+    if request.method == 'POST':
+        peso = float(request.form['peso'])
+        fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
+
+        # Por ahora, ponemos 0 como IDRegistration (si no usás tabla Registration aún)
+        registro = WeightHistory(
+            IDAnimal=id_animal,
+            IDRegistration=0,
+            value=peso,
+            date=fecha
+        )
+
+        db.session.add(registro)
+        db.session.commit()
+        flash('Peso registrado correctamente.')
+        return redirect(url_for('gestion_vacas'))
+
+    return render_template('registrar_peso.html', id_animal=id_animal)
+
+
+@app.route('/gestion_vacas')
+@login_required
+def gestion_vacas():
+    males = Male.query.all()
+    females = Female.query.all()
+    return render_template('gestion_vacas.html', males=males, females=females)
 
 if __name__ == "__main__":
     app.run(debug=True)

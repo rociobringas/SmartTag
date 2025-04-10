@@ -1,29 +1,67 @@
 {% extends 'base.html' %}
 
-{% block title %}Gestión de Vacas{% endblock %}
-
 {% block content %}
-<h2>🐄 Gestión de Vacas</h2>
-
+<h2>Lista de Machos</h2>
 <table>
+  <thead>
     <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Edad</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+      <th>ID</th>
+      <th>Raza</th>
+      <th>Padre</th>
+      <th>Nacimiento</th>
+      <th>Fértil</th>
+      <th>Acciones</th>
     </tr>
-    <tr>
-        <td>1</td>
-        <td>Vaca 1</td>
-        <td>3 años</td>
-        <td>Sana</td>
-        <td>
-            <button>Editar</button>
-            <button>Eliminar</button>
-        </td>
-    </tr>
+  </thead>
+  <tbody>
+    {% if males %}
+      {% for male in males %}
+        <tr>
+          <td>{{ male.IDMale }}</td>
+          <td>{{ male.breed }}</td>
+          <td>{{ male.father }}</td>
+          <td>{{ male.birth.strftime('%d/%m/%Y') }}</td>
+          <td>{{ 'Sí' if male.fertile else 'No' }}</td>
+          <td>
+            <a href="{{ url_for('registrar_evento_male', vaca_id=male.IDMale) }}">Registrar Evento</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="6">No hay machos registrados.</td></tr>
+    {% endif %}
+  </tbody>
 </table>
 
-<button onclick="window.location.href='/'">Volver al Inicio</button>
+<h2>Lista de Hembras</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Raza</th>
+      <th>Padre</th>
+      <th>Nacimiento</th>
+      <th>Fértil</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if females %}
+      {% for female in females %}
+        <tr>
+          <td>{{ female.IDFemale }}</td>
+          <td>{{ female.breed }}</td>
+          <td>{{ female.father }}</td>
+          <td>{{ female.birth.strftime('%d/%m/%Y') }}</td>
+          <td>{{ 'Sí' if female.fertile else 'No' }}</td>
+          <td>
+            <a href="{{ url_for('registrar_evento_female', vaca_id=female.IDFemale) }}">Registrar Evento</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="6">No hay hembras registradas.</td></tr>
+    {% endif %}
+  </tbody>
+</table>
 {% endblock %}

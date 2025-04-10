@@ -21,11 +21,11 @@ class ModelUser:
             raise Exception(f"Error al obtener usuario por ID: {str(ex)}")
 
     @classmethod
-    def register(cls, username, password, fullname=""):
+    def register(cls, username, password):
         try:
             if User.query.filter_by(username=username).first():
                 raise Exception("El usuario ya existe")
-            new_user = User(username, password, fullname)
+            new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
             return new_user
