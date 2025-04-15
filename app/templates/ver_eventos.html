@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Eventos del Animal{% endblock %}
+
+{% block content %}
+<h2>Historial de Eventos</h2>
+
+<div class="d-flex justify-content-start mb-3">
+    <a href="{{ url_for('registrar_peso', id_animal=request.view_args.id_animal) }}" class="btn btn-outline-primary me-2">Registrar Peso</a>
+    <a href="{{ url_for('registrar_vacuna', id_animal=request.view_args.id_animal) }}" class="btn btn-outline-success">Registrar Vacuna</a>
+</div>
+
+{% if eventos %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in eventos %}
+                <tr>
+                    <td>{{ evento.fecha.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ evento.tipo }}</td>
+                    <td>{{ evento.detalle }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay eventos registrados todavía.</p>
+{% endif %}
+{% endblock %}

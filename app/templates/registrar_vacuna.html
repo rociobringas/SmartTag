@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Vacuna{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Registrar Vacuna</h4>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="mb-3">
+                <label for="vacuna" class="form-label">Tipo de Vacuna</label>
+                <select class="form-select" id="vacuna" name="vacuna">
+                    <option value="">Seleccione una opción</option>
+                    <option value="typea">Tipo A</option>
+                    <option value="typeb">Tipo B</option>
+                    <option value="typec">Tipo C</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha de Aplicación</label>
+                <input type="date" class="form-control" id="fecha" name="fecha">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" name="action" value="guardar" class="btn btn-success">💉 Aceptar</button>
+                <button type="submit" name="action" value="cancelar" class="btn btn-outline-secondary" formnovalidate>❌ Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

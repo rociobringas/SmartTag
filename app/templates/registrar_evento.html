@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Evento{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+        <h4 class="mb-4">Registrar Evento para la vaca #{{ vaca.IDAnimal }}</h4>
+
+        <div class="d-grid gap-3 col-6 mx-auto">
+            <a href="{{ url_for('registrar_peso', id_animal=vaca.IDAnimal) }}" class="btn btn-outline-primary btn-lg">
+                📏 Registrar Peso
+            </a>
+            <a href="{{ url_for('registrar_vacuna', id_animal=vaca.IDAnimal) }}" class="btn btn-outline-success btn-lg">
+                💉 Registrar Vacuna
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

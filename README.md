@@ -56,4 +56,9 @@ https://lucid.app/lucidchart/e490acf9-9a5d-41bd-b178-88d8825ab94c/edit?viewport_
 ya tenes cuenta.
 - Por ahora el register y login ya funcionan
 
+
+15 de abril FACU
+-Ya funcionan todas las paginas para registrar vacas, pesos y vacunas. Y ademas hay una que muestra el historial de los eventos de las vacas.
+-Ademas le agregue las cosas para poder correrlo desde el servidor publico que creamos. 
+-Ya esta creada la base de datos en el servidor privado y conectada a la app. 
  
