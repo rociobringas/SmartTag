@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from datetime import datetime
-from models.animal import Animal
-from models.registration import Registration
-from models.vaccineHistory import VaccineHistory
-from models.weightHistory import WeightHistory
-from database import db
-from mqtt_client import publish, MQTT_TOPIC_TRANQUERA
+from app.models.animal import Animal
+from app.models.registration import Registration
+from app.models.vaccineHistory import VaccineHistory
+from app.models.weightHistory import WeightHistory
+from app.database import db
+from app.mqtt_client import publish, MQTT_TOPIC_TRANQUERA
 
 
 vacas_bp = Blueprint('vacas', __name__)
