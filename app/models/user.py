@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from database import db  # Asegurate que este archivo tenga SQLAlchemy() definido
+from app.database import db  # Asegurate que este archivo tenga SQLAlchemy() definido
 
 class User(db.Model, UserMixin):
     __tablename__ = 'User'  # Nombre exacto de la tabla en MySQL

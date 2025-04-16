@@ -2,14 +2,14 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
-from routes.auth import auth_bp
-from routes.vacas import vacas_bp
-from routes.tranqueras import tranqueras_bp
-from routes.sensores import sensores_bp
+from app.routes.auth import auth_bp
+from app.routes.vacas import vacas_bp
+from app.routes.tranqueras import tranqueras_bp
+from app.routes.sensores import sensores_bp
 
-from config import Config
-from database import db
-from models.user import User
+from app.config import Config
+from app.database import db
+from app.models.user import User
 
 
 def create_app():

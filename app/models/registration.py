@@ -1,5 +1,5 @@
 from datetime import datetime
-from database import db
+from app.database import db
 
 class Registration(db.Model):
     __tablename__ = 'Registration'
