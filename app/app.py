@@ -34,6 +34,8 @@ def create_app():
     app.register_blueprint(tranqueras_bp)
     app.register_blueprint(sensores_bp)
 
+    return app
+
 
 
 if __name__ == "__main__":
