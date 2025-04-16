@@ -3,7 +3,7 @@
 {% block title %}Eventos del Animal{% endblock %}
 
 {% block content %}
-<h2>Historial de Eventos</h2>
+<h2>Historial de Eventos - Vaca #{{ request.view_args.id_animal }}</h2>
 
 <div class="d-flex justify-content-start mb-3">
     <a href="{{ url_for('vacas.registrar_peso', id_animal=request.view_args.id_animal) }}" class="btn btn-outline-primary me-2">Registrar Peso</a>

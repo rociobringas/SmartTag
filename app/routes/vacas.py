@@ -83,3 +83,10 @@ def ver_eventos(id_animal):
             vacuna = VaccineHistory.query.get(reg.reference_id)
             eventos.append({'tipo': 'Vacuna', 'fecha': reg.date, 'detalle': vacuna.vaccineType})
     return render_template('ver_eventos.html', eventos=eventos)
+
+
+@vacas_bp.route('/mis_vacas')
+@login_required
+def mis_vacas():
+    vacas = Animal.query.filter_by(IDUser=current_user.id).all()
+    return render_template('mis_vacas.html', vacas=vacas)
