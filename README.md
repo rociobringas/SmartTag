@@ -58,10 +58,10 @@ ya tenes cuenta.
 
 
 15 de abril FACU
--Ya funcionan todas las paginas para registrar vacas, pesos y vacunas. Y ademas hay una que muestra el historial de los eventos de las vacas.
--Ademas le agregue las cosas para poder correrlo desde el servidor publico que creamos. 
--Ya esta creada la base de datos en el servidor privado y conectada a la app. 
--Agregue la parte del MQTT y puse para que se publique un mensaje cada vez que se registra una vaca (para probar que
+- Ya funcionan todas las paginas para registrar vacas, pesos y vacunas. Y ademas hay una que muestra el historial de los eventos de las vacas.
+- Ademas le agregue las cosas para poder correrlo desde el servidor publico que creamos. 
+- Ya esta creada la base de datos en el servidor privado y conectada a la app. 
+- Agregue la parte del MQTT y puse para que se publique un mensaje cada vez que se registra una vaca (para probar que
 funciona el MQTT).
 
  
