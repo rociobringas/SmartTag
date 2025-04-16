@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf.csrf import CSRFProtect
 from datetime import datetime
+import paho.mqtt.client as mqtt
 
 from config import Config
 from database import db
@@ -16,6 +17,14 @@ from models.weightHistory import WeightHistory
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
+MQTT_BROKER = "172.31.90.218"  # ← tu IP privada real
+MQTT_PORT = 1883
+MQTT_TOPIC_TRANQUERA = "campo/tranquera"
+
+#Mosquitto
+client = mqtt.Client()
+client.connect(MQTT_BROKER, MQTT_PORT, 60)
 
 
 # Inicializaciones
