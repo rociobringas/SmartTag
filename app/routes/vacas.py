@@ -49,7 +49,7 @@ def registrar_peso(id_animal):
         db.session.add(registro)
         db.session.commit()
         flash('Peso registrado correctamente!')
-        return redirect(url_for('vacas.ver_eventos', id_animal=id_animal))
+        return redirect(url_for('tranqueras.abrir_corral', id_animal=id_animal))
     return render_template('registrar_peso.html', id_animal=id_animal)
 
 @vacas_bp.route('/registrar_vacuna/<int:id_animal>', methods=['GET', 'POST'])
@@ -67,7 +67,7 @@ def registrar_vacuna(id_animal):
         db.session.add(registro)
         db.session.commit()
         flash('Vacuna registrada correctamente!')
-        return redirect(url_for('vacas.ver_eventos', id_animal=id_animal))
+        return redirect(url_for('tranqueras.abrir_corral', id_animal=id_animal))
     return render_template('registrar_vacuna.html', id_animal=id_animal)
 
 @vacas_bp.route('/ver_eventos/<int:id_animal>')

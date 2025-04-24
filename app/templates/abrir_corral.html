@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Abrir Corral{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">¿A qué corral querés enviar a la vaca <strong>#{{ id_animal }}</strong>?</h2>
+
+    <button class="btn btn-outline-primary btn-lg me-2" onclick="abrirCorral(1)">Abrir Corral 1</button>
+    <button class="btn btn-outline-success btn-lg" onclick="abrirCorral(2)">Abrir Corral 2</button>
+
+    <div id="mensaje" class="mt-4"></div>
+</div>
+
+<script>
+function abrirCorral(numero) {
+    fetch('{{ url_for("tranqueras.enviar_mensaje_corral") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ corral: numero.toString() })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
+    })
+    .catch(error => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
+    });
+}
+</script>
+{% endblock %}

@@ -31,7 +31,7 @@ def create_app():
     # Blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(vacas_bp)
-    app.register_blueprint(tranqueras_bp)
+    app.register_blueprint(tranqueras_bp, url_prefix="/tranqueras")
     app.register_blueprint(sensores_bp)
 
     return app
