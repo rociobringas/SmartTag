@@ -10,6 +10,7 @@ from app.routes.sensores import sensores_bp
 from app.config import Config
 from app.database import db
 from app.models.user import User
+from app.mqtt_listener import start_mqtt_listener
 
 
 def create_app():
@@ -33,6 +34,9 @@ def create_app():
     app.register_blueprint(vacas_bp)
     app.register_blueprint(tranqueras_bp, url_prefix="/tranqueras")
     app.register_blueprint(sensores_bp)
+
+    # Iniciar el listener MQTT
+    start_mqtt_listener()
 
     return app
 

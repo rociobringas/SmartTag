@@ -13,8 +13,18 @@ def abrir_corral():
 @tranqueras_bp.route('/abrir_corral', methods=['POST'])
 @login_required
 def enviar_mensaje_corral():
-    corral = request.json.get('corral')
-    if corral in ['1', '2']:
-        publish(MQTT_TOPIC_TRANQUERA, f"Abrir corral {corral}")
-        return jsonify({"mensaje": f"Corral {corral} abierto correctamente."})
-    return jsonify({"mensaje": "Corral inválido"}), 400
+    data = request.get_json()
+    corral = data.get('corral')
+    id_animal = data.get('id_animal')
+
+    if corral not in ['1', '2']:
+        return jsonify({"mensaje": "Corral inválido"}), 400
+
+    mensaje = {
+        "accion": "abrir",
+        "corral": corral,
+        "id_animal": id_animal
+    }
+
+    publish(MQTT_TOPIC_TRANQUERA, mensaje)
+    return jsonify({"mensaje": f"Corral {corral} abierto correctamente."})

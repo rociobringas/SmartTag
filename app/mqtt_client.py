@@ -1,3 +1,4 @@
+import json
 import paho.mqtt.client as mqtt
 
 MQTT_BROKER = "172.31.90.218"
@@ -12,6 +13,19 @@ def create_mqtt_client():
 def publish(topic, message):
     try:
         client = create_mqtt_client()
-        client.publish(topic, message)
+
+        # Si el mensaje es un diccionario, lo convertimos a JSON string
+        if isinstance(message, dict):
+            message = json.dumps(message)
+
+        # Publicamos el mensaje
+        result = client.publish(topic, message)
+
+        # Esperar hasta que se publique realmente
+        result.wait_for_publish()
+
+        client.disconnect()
+
     except Exception as e:
         print(f"Error al publicar MQTT: {e}")
+
