@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Cerrar Corral{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">¿Qué corral querés cerrar?</h2>
+
+    <button class="btn btn-outline-danger btn-lg me-2" onclick="cerrarCorral(1)">Cerrar Corral 1</button>
+    <button class="btn btn-outline-warning btn-lg" onclick="cerrarCorral(2)">Cerrar Corral 2</button>
+
+    <div id="mensaje" class="mt-4"></div>
+</div>
+
+<script>
+function cerrarCorral(numero) {
+    fetch('{{ url_for("tranqueras.enviar_mensaje_cerrar_corral") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ corral: numero.toString() })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
+    })
+    .catch(error => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
+    });
+}
+</script>
+{% endblock %}
+
+
