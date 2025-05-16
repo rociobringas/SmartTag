@@ -64,4 +64,10 @@ ya tenes cuenta.
 - Agregue la parte del MQTT y puse para que se publique un mensaje cada vez que se registra una vaca (para probar que
 funciona el MQTT).
 
+16 de mayo
+- Ya funcionan las paginas para abrir y cerrar corrales.
+- Ya esta el topic para que suscribirse.
+- Ya se reciben y se mandan mensajes.
+
+
  
