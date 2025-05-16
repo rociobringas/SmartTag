@@ -17,7 +17,10 @@ function abrirCorral(numero) {
     fetch('{{ url_for("tranqueras.enviar_mensaje_corral") }}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ corral: numero.toString() })
+        body: JSON.stringify({
+            corral: numero.toString(),
+            id_animal: "{{ id_animal }}"
+        })
     })
     .then(response => response.json())
     .then(data => {
