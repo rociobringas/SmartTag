@@ -19,7 +19,7 @@ function abrirCorral(numero) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             corral: numero.toString(),
-            id_animal: "{{ id_animal }}"
+            id_animal: "{{ id_animal | string }}"
         })
     })
     .then(response => response.json())
