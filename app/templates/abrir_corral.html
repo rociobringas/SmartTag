@@ -3,6 +3,8 @@
 {% block title %}Abrir Corral{% endblock %}
 
 {% block content %}
+<!-- CSRF token oculto en el head (no se ve en la página) -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="text-center">
     <h2 class="mb-4">¿A qué corral querés enviar a la vaca <strong>#{{ id_animal }}</strong>?</h2>
 
@@ -13,22 +15,27 @@
 </div>
 
 <script>
-function abrirCorral(numero) {
-    fetch('{{ url_for("tranqueras.enviar_mensaje_corral") }}', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            corral: numero.toString(),
-            id_animal: "{{ id_animal | string }}"
+    function abrirCorral(numero) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+        fetch('{{ url_for("tranqueras.enviar_mensaje_corral") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                corral: numero.toString(),
+                id_animal: "{{ id_animal }}"
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
-    })
-    .catch(error => {
-        document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
-    });
-}
-</script>
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
+        })
+        .catch(error => {
+            document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
+        });
+    }
+    </script>    
 {% endblock %}

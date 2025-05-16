@@ -3,6 +3,9 @@
 {% block title %}Cerrar Corral{% endblock %}
 
 {% block content %}
+<!-- CSRF token oculto en el head (no se ve en la página) -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <div class="text-center">
     <h2 class="mb-4">¿Qué corral querés cerrar?</h2>
 
@@ -14,9 +17,14 @@
 
 <script>
 function cerrarCorral(corral) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     fetch('{{ url_for("tranqueras.enviar_mensaje_cerrar_corral") }}', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
         body: JSON.stringify({ corral: corral })
     })
     .then(response => response.json())

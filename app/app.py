@@ -18,7 +18,8 @@ def create_app():
     app.config.from_object(Config)
 
     # Inicializaciones
-    csrf = CSRFProtect(app)
+    csrf = CSRFProtect()
+    csrf.init_app(app)
     db.init_app(app)
 
     login_manager = LoginManager()
