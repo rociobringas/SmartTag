@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import json
 
 MQTT_BROKER = "172.31.90.218"
 MQTT_PORT = 1883
@@ -16,14 +17,23 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     topic = msg.topic
     payload = msg.payload.decode()
-    print(f"[📥 MQTT] Mensaje recibido en {topic}: {payload}")
+    print(f"[📥 MQTT] Mensaje recibido en {topic}: {payload}")  
 
-    # Solo mostramos el mensaje. No se guarda en la base de datos.
     if topic == "tranquera/estado":
-        if payload == "abierta":
-            print("🔓 La tranquera fue abierta")
-        elif payload == "cerrada":
-            print("🔒 La tranquera fue cerrada")
+        try:
+            data = json.loads(payload)  # <-- ✅ Parsear JSON
+
+            estado = data.get("estado")
+            corral = data.get("corral")
+
+            if estado == "abierta":
+                print(f"🔓 La tranquera del corral {corral} fue abierta")
+            elif estado == "cerrada":
+                print(f"🔒 La tranquera del corral {corral} fue cerrada")
+            else:
+                print(f"⚠️ Estado desconocido: {estado}")
+        except Exception as e:
+            print(f"❌ Error al interpretar JSON del mensaje: {e}")
 
 def start_mqtt_listener():
     client = mqtt.Client()
