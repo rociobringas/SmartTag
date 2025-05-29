@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
+import os
 
 MQTT_BROKER = "52.3.134.187"
 MQTT_PORT = 1883
@@ -8,7 +9,15 @@ TOPICS = [
     ("rfid/lectura", 0),
 ]
 
-ultimo_uid = None  # Variable global para almacenar el último UID leído
+def guardar_uid(uid):
+    with open("/tmp/ultimo_uid.txt", "w") as f:
+        f.write(uid)
+
+def obtener_uid():
+    if not os.path.exists("/tmp/ultimo_uid.txt"):
+        return None
+    with open("/tmp/ultimo_uid.txt", "r") as f:
+        return f.read().strip()
 
 def on_connect(client, userdata, flags, rc):
     print("✅ Conectado al broker MQTT con código:", rc)
@@ -19,7 +28,6 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     topic = msg.topic
     payload = msg.payload.decode()
-    global ultimo_uid
     print(f"[📥 MQTT] Mensaje recibido en {topic}: {payload}")  
 
     if topic == "tranquera/estado":
@@ -36,8 +44,9 @@ def on_message(client, userdata, msg):
         except Exception as e:
             print(f"❌ Error al interpretar JSON del mensaje: {e}")
     elif topic == "rfid/lectura":
-        ultimo_uid = payload.strip()  # Eliminar espacios en blanco
-        print(f"🔖 UID leído: {ultimo_uid}")
+        uid = msg.payload.decode().strip()
+        guardar_uid(uid)
+        print(f"🔖 UID leído: {uid}")
 
 def start_mqtt_listener():
     client = mqtt.Client()

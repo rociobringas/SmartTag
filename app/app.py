@@ -31,9 +31,6 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
     
-    @app.route('/')
-    def home():
-        return redirect(url_for('scan.scan'))
 
     # Blueprints
     app.register_blueprint(auth_bp)

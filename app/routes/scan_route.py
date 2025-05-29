@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, jsonify
 from flask_login import login_required
-from app.mqtt_listener import ultimo_uid
 from app.models.animal import Animal
+from app.mqtt_listener import obtener_uid
 
 scan_bp = Blueprint('scan', __name__)
 
@@ -14,11 +14,12 @@ def scan():
 @scan_bp.route('/check_tag')
 @login_required
 def check_tag():
-    if not ultimo_uid:
+    uid = obtener_uid()
+    if not uid:
         return jsonify({"status": "esperando"})
 
-    vaca = Animal.query.filter_by(rfid_uid=ultimo_uid).first()
+    vaca = Animal.query.filter_by(rfid_uid=uid).first()
     if vaca:
         return jsonify({"status": "registrada", "id": vaca.IDAnimal})
     else:
-        return jsonify({"status": "nueva", "uid": ultimo_uid})
+        return jsonify({"status": "nueva", "uid": uid})
