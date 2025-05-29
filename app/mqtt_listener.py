@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import json
 
-MQTT_BROKER = "172.31.90.218"
+MQTT_BROKER = "52.3.134.187"
 MQTT_PORT = 1883
 TOPICS = [
     ("tranquera/estado", 0),
