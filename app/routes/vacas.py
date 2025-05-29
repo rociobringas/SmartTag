@@ -27,6 +27,7 @@ def registrar_vaca():
 
         flash('¡Vaca registrada con éxito!')
         return redirect(url_for('vacas.registrar_evento', id_animal=new_animal.IDAnimal))
+    uid = request.args.get("uid")
     return render_template('registrar_vaca.html', uid=uid)
 
 @vacas_bp.route('/registrar_evento/<int:id_animal>', methods=['GET'])
