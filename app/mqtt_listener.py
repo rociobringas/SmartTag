@@ -7,6 +7,7 @@ MQTT_PORT = 1883
 TOPICS = [
     ("tranquera/estado", 0),
     ("rfid/lectura", 0),
+    ("campo/tranquera", 0)
 ]
 
 def guardar_uid(uid):
@@ -51,6 +52,8 @@ def on_message(client, userdata, msg):
         uid = msg.payload.decode().strip()
         guardar_uid(uid)
         print(f"🔖 UID leído: {uid}")
+    elif topic == "campo/tranquera":
+        print(f"📤 Comando de control enviado: {payload}")
 
 def start_mqtt_listener():
     client = mqtt.Client()
