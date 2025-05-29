@@ -34,7 +34,10 @@ def enviar_mensaje_abrir_corral():
     }
 
     publish(MQTT_TOPIC_TRANQUERA, mensaje)
-    return jsonify({"mensaje": f"Corral {corral} abierto correctamente."})
+    return jsonify({
+        "mensaje": f"Corral {corral} abierto correctamente.",
+        "redirect": url_for("tranqueras.cerrar_corral", id_animal=id_animal)
+    })
 
 # Página para cerrar corral (simple)
 @tranqueras_bp.route('/cerrar_corral')

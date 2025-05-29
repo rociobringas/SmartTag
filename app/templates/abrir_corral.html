@@ -15,27 +15,32 @@
 </div>
 
 <script>
-    function abrirCorral(numero) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
-        fetch('{{ url_for("tranqueras.enviar_mensaje_abrir_corral") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            },
-            body: JSON.stringify({
-                corral: numero.toString(),
-                id_animal: "{{ id_animal }}"
-            })
+function abrirCorral(numero) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('{{ url_for("tranqueras.enviar_mensaje_abrir_corral") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({
+            corral: numero.toString(),
+            id_animal: "{{ id_animal }}"
         })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
-        })
-        .catch(error => {
-            document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
-        });
-    }
-    </script>    
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
+        if (data.redirect) {
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1000); // pequeño delay para ver el mensaje
+        }
+    })
+    .catch(error => {
+        document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
+    });
+}
+</script>
 {% endblock %}

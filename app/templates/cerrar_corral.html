@@ -18,6 +18,7 @@
 <script>
 function cerrarCorral(corral) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const idAnimal = "{{ id_animal }}";  // viene desde Flask
 
     fetch('{{ url_for("tranqueras.enviar_mensaje_cerrar_corral") }}', {
         method: 'POST',
@@ -25,11 +26,19 @@ function cerrarCorral(corral) {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
         },
-        body: JSON.stringify({ corral: corral })
+        body: JSON.stringify({
+            corral: corral,
+            id_animal: idAnimal
+        })
     })
     .then(response => response.json())
     .then(data => {
         document.getElementById("mensaje").innerHTML = `<div class="alert alert-info">${data.mensaje}</div>`;
+        if (data.redirect) {
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1000);
+        }
     })
     .catch(error => {
         document.getElementById("mensaje").innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje.</div>`;
