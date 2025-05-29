@@ -18,7 +18,7 @@
     function abrirCorral(numero) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
-        fetch('{{ url_for("tranqueras.enviar_mensaje_corral") }}', {
+        fetch('{{ url_for("tranqueras.enviar_mensaje_abrir_corral") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
