@@ -6,7 +6,7 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/')
 def home():
-    return redirect(url_for('auth.register'))
+    return redirect(url_for('scan.scan'))
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
