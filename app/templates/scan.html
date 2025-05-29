@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Escaneo RFID{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  <h2 class="mb-4">Esperando escaneo de una vaca 🐮</h2>
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="mt-3">Acerque el tag RFID al lector para continuar.</p>
+</div>
+
+<script>
+setInterval(() => {
+    fetch('/check_tag')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "registrada") {
+                window.location.href = `/ver_eventos/${data.id}`;
+            } else if (data.status === "nueva") {
+                window.location.href = `/registrar_vaca?uid=${data.uid}`;
+            }
+        });
+}, 2000);
+</script>
+{% endblock %}

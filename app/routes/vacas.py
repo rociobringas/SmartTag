@@ -14,19 +14,20 @@ vacas_bp = Blueprint('vacas', __name__)
 @vacas_bp.route('/registrar_vaca', methods=['GET', 'POST'])
 @login_required
 def registrar_vaca():
+    uid = request.form.get("rfid_uid") # UID from the RFID reader
     if request.method == 'POST':
         breed = request.form['breed']
         gender = request.form['gender']
         birth_date = datetime.strptime(request.form['birth_date'], '%Y-%m-%d').date()
         fertile = 'fertile' in request.form
-        new_animal = Animal(IDUser=current_user.id, breed=breed, gender=gender, birth=birth_date, fertile=fertile)
+        new_animal = Animal(IDUser=current_user.id, breed=breed, gender=gender, birth=birth_date, fertile=fertile, rfid_uid = uid)
         db.session.add(new_animal)
         db.session.commit()
         publish(MQTT_TOPIC_TRANQUERA, f"Vaca registrada: ID={new_animal.IDAnimal}, Raza={new_animal.breed}")
 
         flash('¡Vaca registrada con éxito!')
         return redirect(url_for('vacas.registrar_evento', id_animal=new_animal.IDAnimal))
-    return render_template('registrar_vaca.html')
+    return render_template('registrar_vaca.html', uid=uid)
 
 @vacas_bp.route('/registrar_evento/<int:id_animal>', methods=['GET'])
 @login_required

@@ -8,6 +8,7 @@
 
   <form method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="rfid_uid" value="{{ uid }}">
     <div class="mb-3">
       <label for="breed" class="form-label">Raza:</label>
       <input type="text" class="form-control" id="breed" name="breed" required>
