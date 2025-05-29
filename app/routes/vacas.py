@@ -14,8 +14,8 @@ vacas_bp = Blueprint('vacas', __name__)
 @vacas_bp.route('/registrar_vaca', methods=['GET', 'POST'])
 @login_required
 def registrar_vaca():
-    uid = request.form.get("rfid_uid") # UID from the RFID reader
     if request.method == 'POST':
+        uid = request.form.get("rfid_uid")
         breed = request.form['breed']
         gender = request.form['gender']
         birth_date = datetime.strptime(request.form['birth_date'], '%Y-%m-%d').date()
