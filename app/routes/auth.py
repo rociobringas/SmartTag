@@ -4,9 +4,6 @@ from app.models.modelUser import ModelUser
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/')
-def home():
-    return redirect(url_for('scan.scan'))
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])

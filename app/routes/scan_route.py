@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, redirect, url_for
 from app.mqtt_listener import ultimo_uid
 from app.models.animal import Animal
 
 scan_bp = Blueprint('scan', __name__)
+
 
 @scan_bp.route('/scan')
 def scan():
