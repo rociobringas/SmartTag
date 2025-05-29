@@ -27,13 +27,10 @@ def enviar_mensaje_abrir_corral():
     if not id_animal:
         return jsonify({"mensaje": "ID de animal faltante"}), 400
 
-    mensaje = {
-        "accion": "abrir",
-        "corral": corral,
-        "id_animal": id_animal
-    }
-
+    # ✅ Mensaje como espera el ESP32
+    mensaje = f"abrir:{corral}"
     publish(MQTT_TOPIC_TRANQUERA, mensaje)
+
     return jsonify({
         "mensaje": f"Corral {corral} abierto correctamente.",
         "redirect": url_for("tranqueras.cerrar_corral", id_animal=id_animal)
@@ -63,5 +60,6 @@ def enviar_mensaje_cerrar_corral():
         "id_animal": id_animal
     }
 
+    mensaje = f"cerrar:{corral}"
     publish(MQTT_TOPIC_TRANQUERA, mensaje)
     return jsonify({"mensaje": f"Corral {corral} cerrado correctamente.", "redirect" : "/scan"})

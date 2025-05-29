@@ -18,6 +18,10 @@ def obtener_uid():
         return None
     with open("/tmp/ultimo_uid.txt", "r") as f:
         return f.read().strip()
+    
+def limpiar_uid():
+    if os.path.exists("/tmp/ultimo_uid.txt"):
+        os.remove("/tmp/ultimo_uid.txt")
 
 def on_connect(client, userdata, flags, rc):
     print("✅ Conectado al broker MQTT con código:", rc)
