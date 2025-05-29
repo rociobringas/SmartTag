@@ -9,7 +9,7 @@ tranqueras_bp = Blueprint('tranqueras', __name__)
 def abrir_corral(id_animal):
     if request.method == 'POST':
         corral = request.form['corral']
-        publish('tranqueras/control', f'abrir:{corral}')  # usando tu mqtt_client
+        #publish('tranqueras/control', f'abrir:{corral}')  # usando tu mqtt_client
         return redirect(url_for('tranqueras.cerrar_corral', id_animal=id_animal))
     return render_template('abrir_corral.html', id_animal=id_animal)
 
@@ -27,14 +27,17 @@ def enviar_mensaje_abrir_corral():
     if not id_animal:
         return jsonify({"mensaje": "ID de animal faltante"}), 400
 
-    # ✅ Mensaje como espera el ESP32
-    mensaje = f"abrir:{corral}"
+    mensaje = {
+    "accion": "abrir",
+    "corral": corral,
+    "id_animal": id_animal
+    }
     publish(MQTT_TOPIC_TRANQUERA, mensaje)
-
     return jsonify({
-        "mensaje": f"Corral {corral} abierto correctamente.",
-        "redirect": url_for("tranqueras.cerrar_corral", id_animal=id_animal)
-    })
+    "mensaje": f"Corral {corral} abierto correctamente.",
+    "redirect": url_for("tranqueras.cerrar_corral", id_animal=id_animal)
+    }) 
+    
 
 # Página para cerrar corral (simple)
 @tranqueras_bp.route('/cerrar_corral')
@@ -53,13 +56,17 @@ def enviar_mensaje_cerrar_corral():
 
     if corral not in ['1', '2']:
         return jsonify({"mensaje": "Corral inválido"}), 400
+    
+    if not id_animal:
+        return jsonify({"mensaje": "ID de animal faltante"}), 400
 
     mensaje = {
         "accion": "cerrar",
         "corral": corral,
         "id_animal": id_animal
     }
-
-    mensaje = f"cerrar:{corral}"
     publish(MQTT_TOPIC_TRANQUERA, mensaje)
-    return jsonify({"mensaje": f"Corral {corral} cerrado correctamente.", "redirect" : "/scan"})
+    return jsonify({
+        "mensaje": f"Corral {corral} cerrado correctamente.",
+        "redirect": "/scan"
+    })
