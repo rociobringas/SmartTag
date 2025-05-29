@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, jsonify, redirect, url_for
+from flask import Blueprint, render_template, jsonify
+from flask_login import login_required
 from app.mqtt_listener import ultimo_uid
 from app.models.animal import Animal
 
@@ -6,10 +7,12 @@ scan_bp = Blueprint('scan', __name__)
 
 
 @scan_bp.route('/scan')
+@login_required
 def scan():
     return render_template('scan.html')
 
 @scan_bp.route('/check_tag')
+@login_required
 def check_tag():
     if not ultimo_uid:
         return jsonify({"status": "esperando"})

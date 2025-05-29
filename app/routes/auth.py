@@ -4,7 +4,9 @@ from app.models.modelUser import ModelUser
 
 auth_bp = Blueprint('auth', __name__)
 
-
+@auth_bp.route('/')
+def home():
+    return redirect(url_for('auth.login'))
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -14,7 +16,7 @@ def login():
         user = ModelUser.login(username, password)
         if user:
             login_user(user)
-            return redirect(url_for('vacas.registrar_vaca'))
+            return redirect(url_for('scan.scan'))  # Redirigir a la página de escaneo
         else:
             flash('Usuario o contraseña incorrectos.')
     return render_template('login.html')
